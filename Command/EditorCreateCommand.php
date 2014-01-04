@@ -14,6 +14,9 @@ namespace Mavimo\Sculpin\Bundle\EditorBundle\Command;
 use Sculpin\Core\Console\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Sculpin Editor Bundle.
@@ -22,6 +25,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class EditorCreateCommand extends ContainerAwareCommand
 {
+    private $title;
+    private $date;
+    private $type;
+
     /**
      * {@inheritdoc}
      */
@@ -30,7 +37,10 @@ class EditorCreateCommand extends ContainerAwareCommand
         $this
             ->setName('editor:create')
             ->setDescription('Create a new content.')
-            ->setHelp("The <info>editor:create</info> command create a new post content.");
+            ->setHelp("The <info>editor:create</info> command create a new post content.")
+            ->addOption('type', 't', InputOption::VALUE_REQUIRED, 'Type of content to create', 'post')
+            ->addOption('date', 'd', InputOption::VALUE_REQUIRED, 'Date of content to create', date('Y-m-d'))
+            ->addArgument('title', InputArgument::REQUIRED);
     }
 
     /**
@@ -38,6 +48,65 @@ class EditorCreateCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln("Test");
+        $this->type = $input->getOption('type');
+        $this->date = \DateTime::createFromFormat('Y-m-d', $input->getOption('date'));
+        $this->title = $input->getArgument('title');
+
+        $filesystem = new Filesystem();
+
+        $filesystem->dumpFile(
+            $this->createPath(),
+            $this->createContent()
+        );
+
+        $output->writeln("Created file: " . $this->createPath());
+    }
+
+    /**
+     * Path where save file.
+     *
+     * @return string
+     *   Generated path.
+     */
+    protected function createPath()
+    {
+        return "source/_" . $this->type . "s/". $this->date->format('Y-m-d') . "-" . $this->normalizeTitle($this->title) . '.md';
+    }
+
+    /**
+     * Content for the current item.
+     *
+     * @return string
+     *   Content
+     */
+    protected function createContent()
+    {
+        $content = <<<EOL
+---
+title: {$this->title}
+draft: true
+---
+EOL;
+        return $content;
+    }
+
+    /**
+     * Generate title for the content.
+     *
+     * @param string $title
+     *   Title to clean.
+     *
+     * @return string
+     *   Normalized title
+     */
+    protected function normalizeTitle($title)
+    {
+        // Lowercase
+        $title_clean = strtolower($title);
+        // List of chars not allowed
+        $char_not_allowed = array(' ', '.', '(', ')', '=', '[', ']', '{', '}', '?', '!');
+        // Replace with dash
+        $title_clean = str_replace($char_not_allowed, '-', $title_clean);
+        return $title_clean;
     }
 }
