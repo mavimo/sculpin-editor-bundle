@@ -30,7 +30,7 @@ class EditorCreateCommand extends ContainerAwareCommand
         $this
             ->setName('editor:create')
             ->setDescription('Create a new content.')
-            ->setHelp("The <info>create:new</info> command create a new post content.");
+            ->setHelp("The <info>editor:create</info> command create a new post content.");
     }
 
     /**
