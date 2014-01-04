@@ -69,5 +69,5 @@ source/_projects/2014-01-04-new-content-title.md
 
 ## TODO
 
-[_] Add better file writing procedure
-[_] Add better support for content type generation after [Sculpin PR 96](https://github.com/sculpin/sculpin/pull/96) integration in sculpin core.
+ * Add better file writing procedure
+ * Add better support for content type generation after [Sculpin PR 96](https://github.com/sculpin/sculpin/pull/96) integration in sculpin core.
