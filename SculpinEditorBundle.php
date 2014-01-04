@@ -24,6 +24,6 @@ class SculpinEditorBundle extends Bundle
 {
     public function registerCommands(Application $application)
     {
-        $application->add(new EditorCreateCommand(''));
+        $application->add(new EditorCreateCommand());
     }
 }
