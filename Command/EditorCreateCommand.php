@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Mavimo\Sculpin\Bundle\EditorBundle;
+namespace Mavimo\Sculpin\Bundle\EditorBundle\Command;
 
 use Sculpin\Core\Console\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
