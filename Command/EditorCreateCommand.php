@@ -28,7 +28,7 @@ class EditorCreateCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('create:new')
+            ->setName('editor:create')
             ->setDescription('Create a new content.')
             ->setHelp("The <info>create:new</info> command create a new post content.");
     }
