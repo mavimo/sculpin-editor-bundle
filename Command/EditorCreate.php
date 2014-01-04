@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Marco Vito Moscaritolo <marco@mavimo.org>
  */
-class EditorCreate extends ContainerAwareCommand
+class EditorCreateCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
