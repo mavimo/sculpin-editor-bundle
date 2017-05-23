@@ -101,12 +101,18 @@ EOL;
      */
     protected function normalizeTitle($title)
     {
+        // Get Current Locale
+        $currentLocale = setlocale(LC_ALL, 0);
+        // Change to UTF-8 Locale
+        setlocale(LC_ALL, 'en_US.utf8');
         // Lowercase
         $title_clean = strtolower($title);
-        // List of chars not allowed
-        $char_not_allowed = array(' ', '.', '(', ')', '=', '[', ']', '{', '}', '?', '!');
-        // Replace with dash
-        $title_clean = str_replace($char_not_allowed, '-', $title_clean);
+        // Remove Accents by converting UTF-8 to ASCII
+        $title_clean = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $title_clean);
+        // Replace space and non alphanumeric with dash
+        $title_clean = preg_replace("/[^a-z0-9]+/", "-", $title_clean);
+        // Restore locale to default value
+        setlocale(LC_ALL, $currentLocale);
         return $title_clean;
     }
 }
